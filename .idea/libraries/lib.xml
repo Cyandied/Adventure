@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="lib">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../Programs/JavaFX/javafx-sdk-21.0.1/lib" />
-      <root url="file://C:/Program Files/jdbc" />
+      <root url="file://$PROJECT_DIR$/../../../../../Program Files/jdbc" />
+      <root url="file://$PROJECT_DIR$/../../../../../Program Files/JavaFX/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
-    <jarDirectory url="file://C:/Program Files/jdbc" recursive="false" />
-    <jarDirectory url="file://$PROJECT_DIR$/../../../Programs/JavaFX/javafx-sdk-21.0.1/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../../../Program Files/JavaFX/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../../../Program Files/jdbc" recursive="false" />
   </library>
 </component>

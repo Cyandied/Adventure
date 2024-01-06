@@ -34,12 +34,18 @@ public class InteractionManager {
     public String request_interaction(String id){
         if(interaction_exist(id)) {
             Interaction interaction = interactions.get(id);
-            if (!interaction.location_id.equals("0") && Arrays.asList(submaps.active.location_ids).contains(id)) {
+            if (interaction.location_id.equals("0")) {
                 for (String check_id : interaction.parent_item_ids) {
                     if (!p.inventory.containsKey(check_id)) {
                         return "You do not have the items required for this";
                     }
                 }
+                interaction.activate();
+                String display_text = interaction.text();
+                interaction.interaction_has_played = true;
+                return display_text;
+            }
+            else if(Arrays.asList(submaps.active.location_ids).contains(id)){
                 interaction.activate();
                 String display_text = interaction.text();
                 interaction.interaction_has_played = true;
