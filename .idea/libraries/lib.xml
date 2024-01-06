@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="lib">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../../../Program Files/jdbc" />
       <root url="file://$PROJECT_DIR$/../../../../../Program Files/JavaFX/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../../Program Files/jdbc" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -2,7 +2,7 @@ package Utility;
 
 public class Location {
 
-    private String id;
+    final private String id;
     public String name;
     public String desc;
 

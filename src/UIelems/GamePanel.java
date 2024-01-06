@@ -1,7 +1,5 @@
 package UIelems;
 
-import Main.GameControl;
-import Main.InteractionManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -16,6 +14,7 @@ public class GamePanel extends Application {
     private OutputBox out;
     private InputBox in;
     private View view;
+    private Arrows arrows;
 
     public void init() {
 
@@ -28,9 +27,10 @@ public class GamePanel extends Application {
 
         out = new OutputBox(width, height, padding);
         view = new View(width, height, padding);
-        in = new InputBox(width,height,padding,out,view);
+        arrows = new Arrows(view);
+        in = new InputBox(width,height,padding,out,view,arrows);
 
-        primary_pane.getChildren().addAll(in,out,view);
+        primary_pane.getChildren().addAll(in,out,view,arrows.up,arrows.down,arrows.left,arrows.right);
 
         Scene scene = new Scene(primary_pane, width,height);
         primaryStage.setScene(scene);

@@ -1,14 +1,11 @@
 package Main;
 
 import Utility.Interaction;
-import Utility.Item;
-import Utility.Location;
+import Utility.SQLiteJDBC;
 
-import java.io.File;
-import java.nio.file.attribute.UserPrincipal;
+import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class InteractionManager {
 
@@ -18,13 +15,13 @@ public class InteractionManager {
     private Locations locations;
     private SubMaps submaps;
 
-    public InteractionManager(Player p, SubMaps submaps){
+    public InteractionManager(Player p, SubMaps submaps, SQLiteJDBC db){
         interactions = new HashMap<String, Interaction>();
         this.p = p;
         this.submaps = submaps;
-        items = new Items();
-        locations = new Locations();
-        populate();
+        items = new Items(db);
+        locations = new Locations(db);
+        populate(db);
     }
 
     private boolean interaction_exist(String id){
@@ -52,73 +49,35 @@ public class InteractionManager {
                 return display_text;
             }
             else {
-                return "You cannot acess this location from here";
+                return "You cannot access this location from here";
             }
         }
         return "No entry";
     }
 
-    private void populate(){
-        try{
-            Scanner sc = new Scanner(new File("src/res/databases/interactions.csv"));
-            sc.useDelimiter("_");
-            String id = "";
-            String flavour = "";
-            String[] item_ids = {};
-            String[] parent_item_ids = {};
-            boolean destroy_parents = false;
-            String[] check_ids = {};
-            String location_id = "";
-            int i = 1;
-            while (sc.hasNext()){
-                String val = sc.next();
-                    switch (i) {
-                        case 1:
-                            id = val;
-                            i++;
-                            break;
-                        case 2:
-                            flavour = val;
-                            i++;
-                            break;
-                        case 3:
-                            item_ids = arr_from_str(val);
-                            i++;
-                            break;
-                        case 4:
-                            parent_item_ids = arr_from_str(val);
-                            i++;
-                            break;
-                        case 5:
-                            destroy_parents = Boolean.parseBoolean(val);
-                            i++;
-                            break;
-                        case 6:
-                            check_ids = arr_from_str(val);
-                            i++;
-                            break;
-                        case 7:
-                            location_id = val;
-                            i = 1;
-                            interactions.put(id, new Interaction(flavour, item_ids, parent_item_ids, destroy_parents, check_ids, location_id,p,items,locations));
-                            break;
-
-                    }
-                }
-            sc.close();
+    private void populate(SQLiteJDBC db){
+        ResultSet res = db.get_database("interactions");
+        try {
+            while (res.next()){
+                interactions.put(res.getString("id"), new Interaction(
+                        res.getString("flavour"),
+                        res.getString("give_item_ids").split(":"),
+                        res.getString("parent_item_ids").split(":"),
+                        res.getBoolean("destroy_parents"),
+                        res.getString("check_ids").split(":"),
+                        res.getString("location_id"),
+                        p,
+                        items,
+                        locations
+                ));
+            }
         }
         catch (Exception e){
-            System.out.println("oops");
-            System.out.println(e);
+            System.out.println("Interactions not found");
+            System.err.println(e);
         }
-    }
-
-    private String[] arr_from_str(String string){
-        if(!string.isEmpty()){
-            return string.split(":");
-        }
-        return new String[0];
 
     }
+
 
 }
