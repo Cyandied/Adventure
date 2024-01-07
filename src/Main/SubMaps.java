@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class SubMaps {
 
-    private HashMap<String, SubMap> submaps;
+    public HashMap<String, SubMap> submaps;
     private final View view;
     public SubMap active;
 
@@ -39,7 +39,9 @@ public class SubMaps {
                         res.getString("submap_ids").split(":"),
                         res.getString("name"),
                         res.getString("desc"),
-                        res.getString("background_image")));
+                        res.getString("background_image"),
+                        res.getBoolean("unlocked")
+                        ));
             }
         } catch (Exception e){
             System.out.println("Submaps not found");
@@ -62,7 +64,7 @@ public class SubMaps {
         arrows.prime();
         for(int i = 0; i<active.submap_ids.length; i++){
             String submap_id = active.submap_ids[i];
-            if(!submap_id.isEmpty()){
+            if(!submap_id.isEmpty() && submaps.get(submap_id).unlocked){
                 switch (i){
                     case 0:
                         arrows.place_arrow("up", submap_id);
@@ -91,56 +93,11 @@ public class SubMaps {
 
     public String switch_map(String map_id) {
         SubMap map = submaps.get(map_id);
-        switch_map(map);
-        return get_text(map);
-    }
-
-    private void populate(){
-        try{
-            Scanner sc = new Scanner(new File("src/res/databases/submaps.csv"));
-            sc.useDelimiter("_");
-            String id = "";
-            String[] location_ids = {};
-            String[] submap_ids = {};
-            String name = "";
-            String desc = "";
-            String background_image = "";
-            int i = 1;
-            while (sc.hasNext()){
-                String val = sc.next();
-                    switch (i) {
-                        case 1:
-                            id = val;
-                            i++;
-                            break;
-                        case 2:
-                            location_ids = val.split(":");
-                            i++;
-                            break;
-                        case 3:
-                            submap_ids = val.split(":");
-                            i++;
-                            break;
-                        case 4:
-                            name = val;
-                            i++;
-                            break;
-                        case 5:
-                            desc = val;
-                            i++;
-                            break;
-                        case 6:
-                            background_image = val;
-                            i = 1;
-                            submaps.put(id, new SubMap(id, location_ids, submap_ids, name, desc, background_image));
-                            break;
-                    }
-                }
-            sc.close();
+        if(map.unlocked) {
+            switch_map(map);
+            return get_text(map);
         }
-        catch (Exception e){
-            System.out.println(e);
-        }
+        return "You cannot go here";
     }
 
 }

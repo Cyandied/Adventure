@@ -3,9 +3,11 @@ package UIelems;
 import javafx.geometry.VPos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextBoundsType;
 
 import java.awt.*;
 import java.io.FileInputStream;
@@ -15,14 +17,15 @@ public class Arrows {
     public int screen_h;
 
     public int width;
+    public int height;
     private int padding;
 
     private View view;
 
-    Pane up = new Pane();
-    Pane down = new Pane();
-    Pane left = new Pane();
-    Pane right = new Pane();
+    StackPane up = new StackPane();
+    StackPane down = new StackPane();
+    StackPane left = new StackPane();
+    StackPane right = new StackPane();
 
     public ImageView up_img = new ImageView();
     private Text up_label = new Text("A");
@@ -36,7 +39,8 @@ public class Arrows {
 
     public Arrows(View view) {
 
-        width = view.width/10;
+        width = view.width/7;
+        height = width/2;
         screen_w = view.width;
         screen_h = view.height;
         this.view = view;
@@ -50,10 +54,10 @@ public class Arrows {
         set_up_pane("up",up);
         set_up_pane("down",down);
         set_up_pane("left",left);
-        set_up_pane("right",up);
+        set_up_pane("right",right);
     }
 
-    private void set_up_pane(String direction, Pane arrow){
+    private void set_up_pane(String direction, StackPane arrow){
         int arr_pos_w = 0;
         int arr_pos_h = 0;
         switch (direction){
@@ -61,21 +65,25 @@ public class Arrows {
                 arr_pos_w = (screen_w - width)/2;
                 arr_pos_h = view.pos_height;
                 arrow.getChildren().addAll(up_img,up_label);
+                arrow.resize(width,height);
                 break;
             case "down":
                 arr_pos_w = (screen_w - width)/2;
-                arr_pos_h = view.pos_height + screen_h - width;
+                arr_pos_h = view.pos_height + screen_h - height;
                 arrow.getChildren().addAll(down_img,down_label);
+                arrow.resize(width,height);
                 break;
             case "left":
                 arr_pos_w = padding;
                 arr_pos_h = (screen_h - width)/2 + view.pos_height;
                 arrow.getChildren().addAll(left_img,left_label);
+                arrow.resize(height,width);
                 break;
             case "right":
-                arr_pos_w = view.pos_width + screen_w - width;
+                arr_pos_w = view.pos_width + screen_w - height;
                 arr_pos_h = (screen_h - width)/2 + view.pos_height;
                 arrow.getChildren().addAll(right_img,right_label);
+                arrow.resize(height,width);
                 break;
         }
         arrow.relocate(arr_pos_w,arr_pos_h);
@@ -115,10 +123,10 @@ public class Arrows {
     }
 
     private void set_up_img_txt(){
-        set_up_img(up_img);
-        set_up_img(down_img);
-        set_up_img(left_img);
-        set_up_img(right_img);
+        set_up_img(up_img, false);
+        set_up_img(down_img, false);
+        set_up_img(left_img, true);
+        set_up_img(right_img,true);
 
         set_up_text(up_label);
         set_up_text(down_label);
@@ -133,13 +141,21 @@ public class Arrows {
         set_img("right", right_img);
     }
 
-    public void set_up_img(ImageView arrow){
-        arrow.setFitWidth(width);
-        arrow.setFitHeight(width);
+    public void set_up_img(ImageView arrow, Boolean flip){
+        if(flip){
+            arrow.setFitWidth(height);
+            arrow.setFitHeight(width);
+        }
+        else {
+            arrow.setFitWidth(width);
+            arrow.setFitHeight(height);
+        }
     }
 
     public  void set_up_text(Text txt){
-        txt.setTextOrigin(VPos.CENTER);
+        txt.setFont(new Font("Corbel bold",30));
+        txt.setBoundsType(TextBoundsType.VISUAL);
+        txt.setTextAlignment(TextAlignment.CENTER);
     }
 
     public void set_img(String direction, ImageView arrow){

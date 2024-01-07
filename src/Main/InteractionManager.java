@@ -64,11 +64,14 @@ public class InteractionManager {
                         res.getString("give_item_ids").split(":"),
                         res.getString("parent_item_ids").split(":"),
                         res.getBoolean("destroy_parents"),
-                        res.getString("check_ids").split(":"),
+                        res.getString("submap_ids").split(":"),
                         res.getString("location_id"),
+                        res.getString("set_location_clear"),
+                        res.getString("set_location_special"),
                         p,
                         items,
-                        locations
+                        locations,
+                        submaps
                 ));
             }
         }

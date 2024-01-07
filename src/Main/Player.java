@@ -9,12 +9,10 @@ public class Player {
     public int injury = 0;
     public String name;
     public HashMap<String, Item> inventory;
-    public HashMap<String, String> checks;
 
     public Player(){
         name = "player";
         inventory = new HashMap<String, Item>();
-        checks = new HashMap<String, String>();
     }
 
     public String inven_to_string() {

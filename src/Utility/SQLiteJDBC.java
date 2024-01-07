@@ -16,7 +16,6 @@ public class SQLiteJDBC {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        System.out.println("Opened database!");
     }
 
     public ResultSet get_database(String database){

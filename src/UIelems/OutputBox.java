@@ -9,7 +9,7 @@ public class OutputBox extends TextArea {
 
     public int width;
     public int height;
-    public String tutoroll = "Input numbers to interact with map, to combine items and map (item nr first), to combine items (smallest nr first) and use I to see your inventory!";
+    public String tutoroll = "View inventory using (i) or (I) \nInteract with world using the letters and numbers displayed in the scene. \nCombine items and location by inputting the location id (ex 100) with the item id (ex 01) with the item first (ex 01100). \nCombine two items (ex 01 and 02) by combining the two ids, the smallest number first (ex 0102).\nMaps (capital letter ids) cannot be combined with any items or locations.";
 
     public OutputBox(int screen_width, int screen_height, int padding) {
 

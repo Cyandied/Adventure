@@ -3,13 +3,11 @@ package UIelems;
 import Main.InteractionManager;
 import Main.Player;
 import Main.SubMaps;
-import UIelems.OutputBox;
 import Utility.SQLiteJDBC;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
 
 public class InputBox extends TextField{
 
@@ -18,25 +16,22 @@ public class InputBox extends TextField{
 
     public int width;
     public int height;
-    private OutputBox out;
-    private View view;
-    private InteractionManager im;
-    private Player p;
-    private SubMaps sm;
-    private Arrows arrows;
+    private final OutputBox out;
+    private final InteractionManager im;
+    private final Player p;
+    private final SubMaps sm;
+    private boolean first_input = true;
 
-    private Pane primary_pane;
+
 
     public InputBox(int screen_width, int screen_height, int padding, OutputBox out, View view, Arrows arrows) {
         width = screen_width - 2*padding;
         height = screen_height/20;
         pos_width = 10;
         pos_height = screen_height - height - padding;
-        this.view = view;
         this.out = out;
         SQLiteJDBC db = new SQLiteJDBC();
         p = new Player();
-        this.arrows = arrows;
         sm = new SubMaps(view, db,arrows);
         im = new InteractionManager(p, sm, db);
         sm.set_up();
@@ -60,12 +55,15 @@ public class InputBox extends TextField{
             public void handle(KeyEvent ke) {
                 if(ke.getCode().equals(KeyCode.ENTER) && !get_text().isEmpty()) {
                     String text = get_text();
+                    if (first_input){
+                        out.set_text("");
+                        first_input = false;
+                    }
                     if(text.equalsIgnoreCase("I")){
                         out.append_text("Player inventory:");
                         out.append_text(p.inven_to_string());
                     }
                     else if(sm.check_map_avaible(text.toUpperCase())){
-                        out.set_text(out.tutoroll);
                         out.append_text(sm.switch_map(text.toUpperCase()));
                     }
                     else {
