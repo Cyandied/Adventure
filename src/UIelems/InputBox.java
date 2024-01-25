@@ -1,6 +1,7 @@
 package UIelems;
 
 import Main.InteractionManager;
+import Main.Locations;
 import Main.Player;
 import Main.SubMaps;
 import Utility.SQLiteJDBC;
@@ -21,19 +22,21 @@ public class InputBox extends TextField{
     private final Player p;
     private final SubMaps sm;
     private boolean first_input = true;
+    private Locations locations;
 
 
 
-    public InputBox(int screen_width, int screen_height, int padding, OutputBox out, View view, Arrows arrows) {
+    public InputBox(int screen_width, int screen_height, int padding, OutputBox out, View view, Arrows arrows, LocationLabels ll) {
         width = screen_width - 2*padding;
         height = screen_height/20;
         pos_width = 10;
         pos_height = screen_height - height - padding;
         this.out = out;
         SQLiteJDBC db = new SQLiteJDBC();
+        locations = new Locations(db);
         p = new Player();
-        sm = new SubMaps(view, db,arrows);
-        im = new InteractionManager(p, sm, db);
+        sm = new SubMaps(view, db,arrows,ll,locations);
+        im = new InteractionManager(p, sm, db,locations,ll);
         sm.set_up();
         set_up();
     }

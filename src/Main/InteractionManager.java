@@ -1,5 +1,6 @@
 package Main;
 
+import UIelems.LocationLabels;
 import Utility.Interaction;
 import Utility.SQLiteJDBC;
 
@@ -12,15 +13,17 @@ public class InteractionManager {
     private HashMap<String, Interaction> interactions;
     private Player p;
     private Items items;
-    private Locations locations;
+    public Locations locations;
     private SubMaps submaps;
+    private LocationLabels location_labels;
 
-    public InteractionManager(Player p, SubMaps submaps, SQLiteJDBC db){
+    public InteractionManager(Player p, SubMaps submaps, SQLiteJDBC db, Locations locations, LocationLabels ll){
         interactions = new HashMap<String, Interaction>();
         this.p = p;
         this.submaps = submaps;
         items = new Items(db);
-        locations = new Locations(db);
+        this.locations = locations;
+        this.location_labels = ll;
         populate(db);
     }
 
@@ -71,7 +74,8 @@ public class InteractionManager {
                         p,
                         items,
                         locations,
-                        submaps
+                        submaps,
+                        location_labels
                 ));
             }
         }

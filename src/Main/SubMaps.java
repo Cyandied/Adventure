@@ -1,16 +1,14 @@
 package Main;
 
 import UIelems.Arrows;
+import UIelems.LocationLabels;
 import UIelems.View;
 import Utility.SQLiteJDBC;
 import Utility.SubMap;
-import javafx.scene.layout.Pane;
 
-import java.io.File;
 import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class SubMaps {
 
@@ -19,13 +17,17 @@ public class SubMaps {
     public SubMap active;
 
     private Arrows arrows;
+    private LocationLabels location_labels;
+    private Locations locations;
 
     private String starter_map_id = "A";
 
-    public SubMaps(View view, SQLiteJDBC db, Arrows arrows){
+    public SubMaps(View view, SQLiteJDBC db, Arrows arrows, LocationLabels ll, Locations l){
         submaps = new HashMap<String, SubMap>();
         this.view = view;
         this.arrows = arrows;
+        this.location_labels = ll;
+        this.locations = l;
         populate(db);
     }
 
@@ -56,8 +58,13 @@ public class SubMaps {
     }
     private void switch_map(SubMap submap){
         active = submap;
+        draw_locations();
         place_arrows();
         view.set_scene(submap.background_image);
+    }
+
+    private void draw_locations(){
+        location_labels.draw_locations(locations.locations, active.location_ids);
     }
 
     private void place_arrows(){

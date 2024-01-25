@@ -29,7 +29,8 @@ public class Locations {
                         res.getString("desc"),
                         res.getBoolean("cleared"),
                         res.getBoolean("special"),
-                        res.getString("special_location_ref")
+                        res.getString("special_location_ref"),
+                        res.getString("pos_xy").split(":")
                 ));
             }
         } catch (Exception e){

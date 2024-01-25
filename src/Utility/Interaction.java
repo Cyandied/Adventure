@@ -4,6 +4,7 @@ import Main.Items;
 import Main.Locations;
 import Main.Player;
 import Main.SubMaps;
+import UIelems.LocationLabels;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,9 +25,10 @@ public class Interaction {
     final private HashMap<String, Item> items;
     final private HashMap<String, Location> locations;
     final private SubMaps submaps;
+    final private LocationLabels location_labels;
 
 
-    public Interaction(String flavour, String[] give_item_ids, String[] parent_item_ids, boolean destroy_parents, String[] check_ids, String location_id, String set_location_cleared, String set_location_special, Player player, Items items, Locations locations, SubMaps submaps) {
+    public Interaction(String flavour, String[] give_item_ids, String[] parent_item_ids, boolean destroy_parents, String[] check_ids, String location_id, String set_location_cleared, String set_location_special, Player player, Items items, Locations locations, SubMaps submaps, LocationLabels location_labels) {
         this.flavour = flavour;
         this.give_item_ids = give_item_ids;
         this.parent_item_ids = parent_item_ids;
@@ -40,6 +42,7 @@ public class Interaction {
         this.items = items.items;
         this.locations = locations.locations;
         this.submaps = submaps;
+        this.location_labels = location_labels;
     }
 
     public void activate(){
@@ -73,6 +76,13 @@ public class Interaction {
     private void set_special_clear(){
         if(!set_location_special.equals("0") && locations.containsKey(set_location_special)){
             locations.get(set_location_special).special = true;
+            for(int i = 0 ; i < submaps.active.location_ids.length;i++){
+                String id = submaps.active.location_ids[i];
+                if(id.equals(set_location_special)){
+                    submaps.active.location_ids[i] = locations.get(set_location_special).special_location_ref;
+                }
+            }
+            location_labels.draw_locations(locations, submaps.active.location_ids);
         }
         if(!set_location_clear.equals("0") && locations.containsKey(set_location_clear)){
             locations.get(set_location_clear).cleared = true;

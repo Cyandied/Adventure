@@ -13,6 +13,7 @@ public class GamePanel extends Application {
     final private Pane primary_pane = new Pane();
     private OutputBox out;
     private InputBox in;
+    private LocationLabels location_labels;
     private View view;
     private Arrows arrows;
 
@@ -28,9 +29,10 @@ public class GamePanel extends Application {
         out = new OutputBox(width, height, padding);
         view = new View(width, height, padding);
         arrows = new Arrows(view);
-        in = new InputBox(width,height,padding,out,view,arrows);
+        location_labels = new LocationLabels(view);
+        in = new InputBox(width,height,padding,out,view,arrows, location_labels);
 
-        primary_pane.getChildren().addAll(in,out,view,arrows.up,arrows.down,arrows.left,arrows.right);
+        primary_pane.getChildren().addAll(in,out,view,arrows.up,arrows.down,arrows.left,arrows.right, location_labels);
 
         Scene scene = new Scene(primary_pane, width,height);
         primaryStage.setScene(scene);
